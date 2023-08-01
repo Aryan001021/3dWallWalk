@@ -1,0 +1,129 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Gravity : MonoBehaviour
+{
+    [SerializeField] GameObject hologram;
+    Vector2 gravityInput;
+    [SerializeField]Vector3 gravityVector = new Vector3(0,0,-1);
+    Vector3 tempGravityVector;
+    Vector3 rotationVector ;
+    Rigidbody rb;
+   
+    private void Start()
+    {
+        tempGravityVector = gravityVector;
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        InputManager.instance.OnEnterPressed += Instance_OnEnterPressed;
+    }
+
+    private void Instance_OnEnterPressed(object sender, System.EventArgs e)
+    {
+       // transform.parent.eulerAngles = rotationVector;
+    }
+    private void LateUpdate()
+    {
+        gravityInput=InputManager.instance.GetGravityVariable();
+        if(Mathf.Abs(gravityVector.x) == 1 && gravityVector.y == 0 && gravityVector.z == 0)
+        {
+            if (gravityInput.y == -1)
+            {
+                tempGravityVector = Vector3.down;
+            }
+            else if (gravityInput.y == 1)
+            {
+                tempGravityVector = Vector3.up;
+            }
+            else if (gravityInput.x == -1)
+            {
+                tempGravityVector = Vector3.left;
+            }
+            else if (gravityInput.x == 1)
+            {
+                tempGravityVector = Vector3.right;
+            }
+        }
+        else if(gravityVector.x == 0 && Mathf.Abs(gravityVector.y) == 1 && gravityVector.z == 0)
+        {
+            if (gravityInput.x == 1)
+            {
+                tempGravityVector = Vector3.right;
+            }
+            else if (gravityInput.x == -1)
+            {
+                tempGravityVector = Vector3.left;
+            }
+            else if (gravityInput.y == 1)
+            {
+                tempGravityVector = Vector3.forward;
+            }
+            else if (gravityInput.y == -1)
+            {
+                tempGravityVector = Vector3.back;
+            }
+        }
+        else if (gravityVector.x == 0 && gravityVector.y == 0 && Mathf.Abs(gravityVector.z) == 1 )
+        {
+            if (gravityInput.y == -1)
+            {
+                tempGravityVector = Vector3.down;
+            }
+            else if (gravityInput.y == 1)
+            {
+                tempGravityVector = Vector3.up;
+            }
+            else if (gravityInput.x == -1)
+            {
+                tempGravityVector = Vector3.left;
+            }
+            else if (gravityInput.x == 1)
+            {
+                tempGravityVector = Vector3.right;
+            }
+        }
+        if (gravityInput == Vector2.zero)
+        {
+             hologram.SetActive(false);
+        }
+        else
+        {
+            hologram.SetActive(true);
+            hologram.TryGetComponent(out Transform hologramTransform);
+            //for y gravity
+            //if (Mathf.Abs(tempGravityVector.x) == 1)
+            //{
+            //    rotationVector = new Vector3(0, 0, tempGravityVector.x);
+            //}
+            //else if (Mathf.Abs(tempGravityVector.z) == 1)
+            //{
+            //    rotationVector = new Vector3(-tempGravityVector.z, 0, 0);
+            //}
+            //for x gravity
+            //if (Mathf.Abs(tempGravityVector.x) == 1)
+            //{
+            //    rotationVector = new Vector3(0,0 ,tempGravityVector.x);//this here
+            //}
+            //else if (Mathf.Abs(tempGravityVector.y) == 1)
+            //{
+            //    rotationVector = new Vector3(-tempGravityVector.y,0, 0);
+            //}
+            //For z gravity
+            if (Mathf.Abs(tempGravityVector.x) == 1)
+            {
+                rotationVector = new Vector3(0, 0, tempGravityVector.x);//this here
+            }
+            else if (Mathf.Abs(tempGravityVector.y) == 1)
+            {
+                rotationVector = new Vector3(-tempGravityVector.y, 0, 0);
+            }
+            rotationVector = rotationVector * 90;
+            Debug.Log(rotationVector);
+            hologramTransform.localEulerAngles= rotationVector ;
+        }
+        
+        rb.AddForce(gravityVector * 9.81f, ForceMode.Acceleration);
+    }
+    
+}
