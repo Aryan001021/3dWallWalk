@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(rb.velocity+transform.up*jumpSpeed*Time.deltaTime,ForceMode.Impulse);
             onGround = false;
-            bool jump = true;
+            jumpState = true;
         }//this make player jump with rigidbody add force
     }
 
@@ -114,124 +114,23 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 movementVector = new Vector3(0, 0, 0);
         Vector2 tempMovementVector = InputManager.instance.GetMovementVector();
-        if ((int)playerGravityVector.x == 0 && (int)playerGravityVector.y == -1 && (int)playerGravityVector.z == 0)
-        {
             if (Mathf.Sign(tempMovementVector.x) == 1 && tempMovementVector.x != 0)
             {
-                movementVector += Vector3.right;
+                movementVector += transform.right;
             }
             if (Mathf.Sign(tempMovementVector.x) == -1 && tempMovementVector.x != 0)
             {
-                movementVector += Vector3.left;
+                movementVector += -transform.right;
             }
             if (Mathf.Sign(tempMovementVector.y) == 1 && tempMovementVector.y != 0)
             {
-                movementVector += Vector3.forward;
+                movementVector += transform.forward;
             }
             if (Mathf.Sign(tempMovementVector.y) == -1 && tempMovementVector.y != 0)
             {
-                movementVector += Vector3.back;
+                movementVector += -transform.forward;
             }
-        }
-        else if ((int)playerGravityVector.x == 0 && (int)playerGravityVector.y == 1 && (int)playerGravityVector.z == 0)
-        {
-            if (Mathf.Sign(tempMovementVector.x) == 1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.left;
-            }
-            if (Mathf.Sign(tempMovementVector.x) == -1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.right;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == 1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.forward;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == -1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.back;
-            }
-        }
-
-        else if ((int)playerGravityVector.x == -1 && (int)playerGravityVector.y == 0 && (int)playerGravityVector.z == 0)
-        {
-            if (Mathf.Sign(tempMovementVector.x) == 1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.down;
-            }
-            if (Mathf.Sign(tempMovementVector.x) == -1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.up;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == 1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.forward;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == -1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.back;
-            }
-        }
-
-        else if ((int)playerGravityVector.x == 1 && (int)playerGravityVector.y == 0 && (int)playerGravityVector.z == 0)
-        {
-            if (Mathf.Sign(tempMovementVector.x) == 1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.up;
-            }
-            if (Mathf.Sign(tempMovementVector.x) == -1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.down;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == 1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.forward;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == -1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.back;
-            }
-        }
-        else if ((int)playerGravityVector.x == 0 && (int)playerGravityVector.y == 0 && (int)playerGravityVector.z == -1)
-        {
-            if (Mathf.Sign(tempMovementVector.x) == 1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.right;
-
-            }
-            if (Mathf.Sign(tempMovementVector.x) == -1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.left;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == 1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.down;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == -1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.up;
-            }
-        }
-        else if ((int)playerGravityVector.x == 0 && (int)playerGravityVector.y == 0 && (int)playerGravityVector.z == 1)
-        {
-            if (Mathf.Sign(tempMovementVector.x) == 1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.right;
-
-            }
-            if (Mathf.Sign(tempMovementVector.x) == -1 && tempMovementVector.x != 0)
-            {
-                movementVector += Vector3.left;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == 1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.up;
-            }
-            if (Mathf.Sign(tempMovementVector.y) == -1 && tempMovementVector.y != 0)
-            {
-                movementVector += Vector3.down;
-            }
-        }
+      
         //here to rotate visual
         VisualRotation(tempMovementVector);
         //till here
